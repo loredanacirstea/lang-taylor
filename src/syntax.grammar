@@ -21,6 +21,10 @@ expression {
   space { $[ \t\n\r]+ }
 
   "(" ")"
+
+  "[" "]"
+
+  "{" "}"
 }
 
 @detectDelim

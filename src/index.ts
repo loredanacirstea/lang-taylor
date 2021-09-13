@@ -14,10 +14,17 @@ export const taylorLanguage = LRLanguage.define({
       }),
       styleTags({
         Identifier: t.variableName,
+        VariableName: t.variableName,
         Boolean: t.bool,
         String: t.string,
         LineComment: t.lineComment,
-        "( )": t.paren
+        Number: t.number,
+        "( )": t.paren,
+        "[ ]": t.squareBracket,
+        "{ }": t.brace,
+        "def! macrodef! let* fn*": t.definitionKeyword,
+        "quote mquote mquote-noparens quasiquoteexpand quasiquote macroexpand eval": t.keyword,
+        "try* catch* do if and or undefined?": t.controlKeyword,
       })
     ]
   }),
@@ -26,19 +33,19 @@ export const taylorLanguage = LRLanguage.define({
   }
 })
 
-export const taylorCompletion = taylorLanguage.data.of({
-  autocomplete: completeFromList([
-    {label: "def!", type: "keyword"},
-    {label: "macrodef!", type: "keyword"},
-    {label: "let*", type: "keyword"},
+const taylorCompletion = (autocompleteList: any) => taylorLanguage.data.of({
+  autocomplete: completeFromList(autocompleteList || [
+    {label: "def!", type: "function"},
+    {label: "macrodef!", type: "function"},
+    {label: "let*", type: "function"},
     {label: "cons", type: "function"},
     {label: "concat", type: "function"},
     {label: "str", type: "function"}
   ])
 });
 
-export function taylor() {
-  return new LanguageSupport(taylorLanguage, taylorCompletion);
+export function taylor(autocompleteList = []) {
+  return new LanguageSupport(taylorLanguage, taylorCompletion(autocompleteList));
 }
 
 
