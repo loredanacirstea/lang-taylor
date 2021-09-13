@@ -1,6 +1,7 @@
-import {parser} from "./syntax.grammar"
-import {LRLanguage, LanguageSupport, indentNodeProp, foldNodeProp, foldInside, delimitedIndent} from "@codemirror/language"
-import {styleTags, tags as t} from "@codemirror/highlight"
+import {completeFromList} from "@codemirror/autocomplete";
+import {parser} from "./syntax.grammar";
+import {LRLanguage, LanguageSupport, indentNodeProp, foldNodeProp, foldInside, delimitedIndent} from "@codemirror/language";
+import {styleTags, tags as t} from "@codemirror/highlight";
 
 export const taylorLanguage = LRLanguage.define({
   parser: parser.configure({
@@ -25,6 +26,19 @@ export const taylorLanguage = LRLanguage.define({
   }
 })
 
+export const taylorCompletion = taylorLanguage.data.of({
+  autocomplete: completeFromList([
+    {label: "def!", type: "keyword"},
+    {label: "macrodef!", type: "keyword"},
+    {label: "let*", type: "keyword"},
+    {label: "cons", type: "function"},
+    {label: "concat", type: "function"},
+    {label: "str", type: "function"}
+  ])
+});
+
 export function taylor() {
-  return new LanguageSupport(taylorLanguage)
+  return new LanguageSupport(taylorLanguage, taylorCompletion);
 }
+
+
