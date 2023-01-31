@@ -1,7 +1,7 @@
 import {completeFromList} from "@codemirror/autocomplete";
 import {parser} from "./syntax.grammar";
 import {LRLanguage, LanguageSupport, indentNodeProp, foldNodeProp, foldInside, delimitedIndent} from "@codemirror/language";
-import {styleTags, tags as t} from "@codemirror/highlight";
+import {styleTags, tags as t} from "@lezer/highlight";
 
 export const taylorLanguage = LRLanguage.define({
   parser: parser.configure({
